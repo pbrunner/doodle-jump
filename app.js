@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if(e.key === 'ArrowRight') {
       moveRight();
     } else if(e.key === 'ArrowUp') {
-      moveStraight();
+      stopMoving();
     }
   }
 
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         doodlerLeftSpace -= 5;
         doodler.style.left = doodlerLeftSpace + 'px';
       } else moveRight();
-    }, 30)
+    }, 20)
   }
 
   function moveRight() {
@@ -147,15 +147,15 @@ document.addEventListener('DOMContentLoaded', () => {
       isGoingLeft = false;
     }
     isGoingRight = true;
-    let rightTimerID = setInterval(function() {
+    rightTimerID = setInterval(function() {
       if(doodlerLeftSpace <= 340) {
         doodlerLeftSpace += 5;
         doodler.style.left = doodlerLeftSpace + 'px';
       } else moveLeft();
-    }, 30)
+    }, 20)
   }
 
-  function moveStraight() {
+  function stopMoving() {
     isGoingLeft = false;
     isGoingRight = false;
     clearInterval(leftTimerID);
@@ -168,7 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
       createDoodler();
       setInterval(movePlatforms, 30);
       jump();
-      document.addEventListener('keyup', control);
+      document.addEventListener('keydown', control);
+      document.addEventListener('keyup', stopMoving);
     }
   }
   start();
