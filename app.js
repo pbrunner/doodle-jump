@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
           firstPlatform.classList.remove('platform');
           platforms.shift();
           score++;
-          console.log(platforms);
+          // console.log(platforms);
           let newPlatform = new Platform(600);
           platforms.push(newPlatform);
         }
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
           doodlerLeftSpace <= platform.left + 85 && 
           !isJumping
           ) {
-          console.log('Landed');
+          // console.log('Landed');
           startPoint = doodlerBottomSpace;
           jump();
         }
@@ -134,7 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     isGoingLeft = true;
     leftTimerID = setInterval(function() {
-      if(doodlerLeftSpace >= 0) {
+      if(doodlerLeftSpace > 0) {
+        console.log('Going left: ' + doodlerLeftSpace)
         doodlerLeftSpace -= 5;
         doodler.style.left = doodlerLeftSpace + 'px';
       } else moveRight();
@@ -148,7 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     isGoingRight = true;
     rightTimerID = setInterval(function() {
-      if(doodlerLeftSpace <= 340) {
+      if(doodlerLeftSpace < 340) {
+        console.log('Going right: ' + doodlerLeftSpace)
         doodlerLeftSpace += 5;
         doodler.style.left = doodlerLeftSpace + 'px';
       } else moveLeft();
@@ -171,6 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.addEventListener('keydown', control);
       document.addEventListener('keyup', stopMoving);
     }
+    stopMoving();
   }
   start();
 });
