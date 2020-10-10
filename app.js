@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let leftTimerID;
   let rightTimerID;
   let score = 0;
+  let bluerTimeID;
 
   function createDoodler() {
     grid.appendChild(doodler);
@@ -61,10 +62,23 @@ document.addEventListener('DOMContentLoaded', () => {
           score++;
           // console.log(platforms);
           let newPlatform = new Platform(600);
+          if(score > 2) {
+            bluePlatform(newPlatform);
+          }
           platforms.push(newPlatform);
         }
       })
     }
+  }
+
+  function bluePlatform(platform) {
+    platform.visual.style.backgroundColor = 'blue';
+    bluerTimeID = setInterval(function() {
+      if(platform.left > 0) {
+        platform.left -= 5;
+        platform.visual.style.left = platform.left + 'px';
+      };
+    }, 20);
   }
 
   function jump() {
