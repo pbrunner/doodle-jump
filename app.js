@@ -15,7 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let leftTimerID;
   let rightTimerID;
   let score = 0;
-  let bluerTimeID;
+  let leftBlueTimerID;
+  let rightBlueTimerID;
+  let blueIsGoingLeft = false;
+  let blueIsGoingRight = false;
 
   function createDoodler() {
     grid.appendChild(doodler);
@@ -73,12 +76,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function bluePlatform(platform) {
     platform.visual.style.backgroundColor = 'blue';
-    bluerTimeID = setInterval(function() {
+    blueMoveLeft(platform);
+    blueMoveRight(platform);
+  }
+
+  function blueMoveLeft(platform) {
+    if(blueIsGoingRight) {
+      clearInterval(blueRightTimerID);
+      blueIsGoingRight = false;
+    }
+    blueIsGoingLeft = true;
+    blueLeftTimerID = setInterval(function() {
       if(platform.left > 0) {
         platform.left -= 5;
         platform.visual.style.left = platform.left + 'px';
-      };
-    }, 20);
+      } else blueMoveRight(platform);
+    }, 20)
+  }
+
+  function blueMoveRight(platform) {
+    if(blueIsGoingLeft) {
+      clearInterval(blueLeftTimerID);
+      blueIsGoingLeft = false;
+    }
+    blueIsGoingRight = true;
+    blueRightTimerID = setInterval(function() {
+      if(platform.left < 340) {
+        platform.left += 5;
+        platform.visual.style.left = platform.left + 'px';
+      } else blueMoveLeft(platform);
+    }, 20)
   }
 
   function jump() {
@@ -121,6 +148,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function gameOver() {
     console.log('Game Over');
     isGameOver = true;
+    document.removeEventListener('keydown', control);
+    document.removeEventListener('keydown', stopMoving);
     while(grid.firstChild) {
       grid.removeChild(grid.firstChild);
     }
@@ -187,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.addEventListener('keydown', control);
       document.addEventListener('keyup', stopMoving);
     }
-    stopMoving();
   }
   start();
 });
